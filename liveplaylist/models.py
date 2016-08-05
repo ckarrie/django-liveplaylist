@@ -39,7 +39,11 @@ class PlaylistChannel(models.Model):
     position = models.PositiveIntegerField()
 
     def get_entry_name(self):
-        scraper_display = self.livechannel.source.htmlscraper.display_name
+        try:
+            scraper_display = self.livechannel.source.htmlscraper.display_name
+        except AttributeError:
+            scraper_display = ''
+            
         return self.playlist.channel_naming % {
             'playlist': self.playlist.name,
             'channel': self.livechannel.name,

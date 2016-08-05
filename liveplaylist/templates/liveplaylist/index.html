@@ -62,22 +62,24 @@
                                 <ul>
                                     <li>XPaths zu Unterseiten:
                                         <ul>
-                                            <li><pre>{{ s.main_page_find_subpages_xpath }}</pre></li>
+                                            <li><pre>{{ s.main_page_find_subpages_xpath|default:"-" }}</pre></li>
                                         </ul>
                                     </li>
                                     <li>XPaths zu Streams:
                                         <ul>
-                                            <li><pre>{{ s.subpage_find_stream_xpath }}</pre></li>
+                                            <li><pre>{{ s.subpage_find_stream_xpath|default:"-" }}</pre></li>
                                         </ul>
                                     </li>
                                     <li>Title XPaths:
                                         <ul>
-                                            <li><pre>{{ s.title_xpaths }}</pre></li>
+                                            {% for tx in s.get_title_xpaths %}
+                                                <li><pre>{{ tx }}</pre></li>
+                                            {% endfor %}
                                         </ul>
                                     </li>
                                     <li>Filterung nach Titel:
                                         <ul>
-                                            <li><pre>{{ s.filter_title_contains }}</pre></li>
+                                            <li><pre>{{ s.filter_title_contains|default:"-" }}</pre></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -100,7 +102,7 @@
                             <tr>
                                 <td>{{ lc.name }}</td>
                                 <td>{{ lc.source|truncatechars:20 }}</td>
-                                <td>{{ lc.source.htmlscraper }}</td>
+                                <td>{{ lc.source.htmlscraper|default:"-" }}</td>
                                 <td><a href="{{ lc.source.stream_url }}">{{ lc.source.stream_url|truncatechars:20 }}</a></td>
                                 <td>{{ lc.source.last_updated }}</td>
                             </tr>

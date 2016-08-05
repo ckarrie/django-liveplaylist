@@ -128,6 +128,11 @@ class HTMLScraper(models.Model):
     def scrape(self, **kwargs):
         return utils.process_scraper(scraper=self, **kwargs)
 
+    def get_title_xpaths(self):
+        if self.title_xpaths:
+            return self.title_xpaths.split(',')
+        return []
+
     class Meta:
         ordering = ('name', 'main_page_url',)
 

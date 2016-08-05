@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Streams</title>
+    <link rel="stylesheet" href="http://ccm.kbs-baulogistik.de/static/js/aui-5.9.4/css/aui.min.css" media="all">
+    <link rel="stylesheet" href="http://ccm.kbs-baulogistik.de/static/js/font-awesome-4.5.0/css/font-awesome.min.css"
+          media="all">
+</head>
+<body class="aui-page-hybrid aui-page-size-xlarge">
+<div id="page">
+    <section id="content" role="main">
+        <header class="aui-page-header">
+            <div class="aui-page-header-inner">
+                <div class="aui-page-header-main">
+                    <h1>Playlists</h1>
+                    <table class="aui">
+                        <tr>
+                            <th>User</th>
+                            <th>Name</th>
+                            <th>Tags</th>
+                            <th>Kanäle</th>
+                            <th>Wrapped Playlist</th>
+                            <th>Playlist</th>
+                        </tr>
+                        {% for pl in playlists %}
+                        <tr>
+                            <td>{{ pl.owner }}</td>
+                            <td>{{ pl.name }}</td>
+                            <td>
+                                {% if pl.public %}
+                                <span class="aui-lozenge aui-lozenge-success aui-lozenge-subtle">Öffentlich</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <ul>
+                                    {% for plc in pl.playlistchannel_set.all %}
+                                    <li>{{ plc.get_entry_name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td><a href="{{ pl.get_m3u_url }}">{{ pl.get_m3u_url }}</a></td>
+                            <td><a href="{{ pl.get_m3u_url }}?unwrap=1">{{ pl.get_m3u_url }}?unwrap=1</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <p></p>
+                    <h2>Installierte Scraper</h2>
+                    <table class="aui">
+                        <tr>
+                            <th>Typ</th>
+                            <th>Name</th>
+                            <th>Haupt-URL</th>
+                            <th>Wrapper</th>
+                        </tr>
+                        {% for s in scrapers %}
+                        <tr>
+                            <td>HTML</td>
+                            <td>{{ s.name }}</td>
+                            <td>
+                                <a href="{{ s.main_page_url }}">{{ s.main_page_url }}</a>
+                                <ul>
+                                    <li>XPaths zu Unterseiten:
+                                        <ul>
+                                            <li><pre>{{ s.main_page_find_subpages_xpath }}</pre></li>
+                                        </ul>
+                                    </li>
+                                    <li>XPaths zu Streams:
+                                        <ul>
+                                            <li><pre>{{ s.subpage_find_stream_xpath }}</pre></li>
+                                        </ul>
+                                    </li>
+                                    <li>Title XPaths:
+                                        <ul>
+                                            <li><pre>{{ s.title_xpaths }}</pre></li>
+                                        </ul>
+                                    </li>
+                                    <li>Filterung nach Titel:
+                                        <ul>
+                                            <li><pre>{{ s.filter_title_contains }}</pre></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>{{ s.default_wrapper }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <p></p>
+                    <h2>Live-Channels</h2>
+                    <table class="aui">
+                        <tr>
+                            <th>Name</th>
+                            <th>Source</th>
+                            <th>Scraper</th>
+                            <th>Stream-URL</th>
+                            <th>Aktualisiert</th>
+                        </tr>
+                        {% for lc in livechannels %}
+                            <tr>
+                                <td>{{ lc.name }}</td>
+                                <td>{{ lc.source|truncatechars:20 }}</td>
+                                <td>{{ lc.source.htmlscraper }}</td>
+                                <td><a href="{{ lc.source.stream_url }}">{{ lc.source.stream_url|truncatechars:20 }}</a></td>
+                                <td>{{ lc.source.last_updated }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            </div>
+        </header>
+    </section>
+    <footer id="footer" role="contentinfo">
+        <section class="footer-body">
+          <ul>
+            <li>Angemeldet als {{ user }}</li>
+            <li>Design by Atlassian</li>
+            <li>{% now "DATETIME_FORMAT" %}</li>
+          </ul>
+            <div id="footer-logo"><a href="http://www.atlassian.com/" target="_blank">Atlassian</a></div>
+        </section>
+      </footer>
+</div>
+</body>
+</html>

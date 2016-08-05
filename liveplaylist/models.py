@@ -12,6 +12,7 @@ class Playlist(models.Model):
     channel_naming = models.CharField(max_length=255, choices=(
         ('%(channel)s', '<Name Kanal>'),
         ('%(playlist)s - %(channel)s', '<Name Playlist> - <Name Kanal>'),
+        ('%(scraper)s - %(channel)s', '<Name Scraper> - <Name Kanal>'),
         ('%(playlist)s - %(position)d', '<Name Playlist> - <Position Kanal>'),
         ('%(playlist)s - %(position)d - %(channel)s', '<Name Playlist> - <Position Kanal> - <Name Kanal>'),
         ('%(playlist)s - %(extra)s %(position)d - %(channel)s', '<Name Playlist> - <Extra> <Position Kanal> - <Name Kanal>'),
@@ -42,7 +43,8 @@ class PlaylistChannel(models.Model):
             'playlist': self.playlist.name,
             'channel': self.livechannel.name,
             'position': self.position,
-            'extra': self.playlist.channel_naming_extra
+            'extra': self.playlist.channel_naming_extra,
+            'scraper': self.livechannel.source.htmlscraper
         }
 
     def __unicode__(self):

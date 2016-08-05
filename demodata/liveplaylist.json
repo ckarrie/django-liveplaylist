@@ -1,0 +1,606 @@
+[
+{
+    "model": "liveplaylist.playlist",
+    "pk": 1,
+    "fields": {
+        "name": "Olympia 2016",
+        "owner": 1,
+        "public": true,
+        "channel_naming": "%(channel)s",
+        "channel_naming_extra": "Stream #"
+    }
+},
+{
+    "model": "liveplaylist.playlist",
+    "pk": 2,
+    "fields": {
+        "name": "Sonstige",
+        "owner": 1,
+        "public": true,
+        "channel_naming": "%(channel)s",
+        "channel_naming_extra": ""
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 5,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 5,
+        "position": 10
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 10,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 14,
+        "position": 15
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 11,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 15,
+        "position": 16
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 12,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 16,
+        "position": 17
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 13,
+    "fields": {
+        "playlist": 2,
+        "livechannel": 17,
+        "position": 3
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 14,
+    "fields": {
+        "playlist": 2,
+        "livechannel": 18,
+        "position": 1
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 15,
+    "fields": {
+        "playlist": 2,
+        "livechannel": 19,
+        "position": 2
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 16,
+    "fields": {
+        "playlist": 2,
+        "livechannel": 20,
+        "position": 4
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 32,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 36,
+        "position": 20
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 40,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 44,
+        "position": 21
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 41,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 45,
+        "position": 22
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 42,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 46,
+        "position": 23
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 43,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 47,
+        "position": 24
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 44,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 48,
+        "position": 25
+    }
+},
+{
+    "model": "liveplaylist.playlistchannel",
+    "pk": 45,
+    "fields": {
+        "playlist": 1,
+        "livechannel": 49,
+        "position": 26
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 5,
+    "fields": {
+        "name": "ARD Sportschau",
+        "source": 25
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 14,
+    "fields": {
+        "name": "NDR Spezial 1",
+        "source": 34
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 15,
+    "fields": {
+        "name": "NDR Spezial 2",
+        "source": 35
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 16,
+    "fields": {
+        "name": "NDR Spezial 3",
+        "source": 36
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 17,
+    "fields": {
+        "name": "TeleZ\u00fcri HD",
+        "source": 49
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 18,
+    "fields": {
+        "name": "Servus TV HD",
+        "source": 46
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 19,
+    "fields": {
+        "name": "K\u00f6ln.tv",
+        "source": 47
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 20,
+    "fields": {
+        "name": "JOIZ HD",
+        "source": 48
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 36,
+    "fields": {
+        "name": "Er\u00f6ffnungsfeier",
+        "source": 65
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 44,
+    "fields": {
+        "name": "(F) Vorrunde Gruppe A (BRA-AUS)",
+        "source": 73
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 45,
+    "fields": {
+        "name": "(F) Vorrunde Gruppe B (GBR-AUS)",
+        "source": 74
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 46,
+    "fields": {
+        "name": "(M) 10m Luftpistole Finale",
+        "source": 75
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 47,
+    "fields": {
+        "name": "(M) Stra\u00dfenrennen",
+        "source": 76
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 48,
+    "fields": {
+        "name": "(M) Vorrunde Gruppe B (CAN-GER)",
+        "source": 77
+    }
+},
+{
+    "model": "liveplaylist.livechannel",
+    "pk": 49,
+    "fields": {
+        "name": "(F) SUI - CHN",
+        "source": 78
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 25,
+    "fields": {
+        "name": "ARD Sportschau",
+        "htmlscraper": null,
+        "wrapper": 1,
+        "stream_url": "http://ndr_spezial-lh.akamaihd.net/i/spezial_1@119227/master.m3u8",
+        "last_updated": "2016-08-04T17:49:50.968Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 34,
+    "fields": {
+        "name": "NDR Spezial 1",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://ndr_spezial-lh.akamaihd.net/i/spezial_1@119227/master.m3u8",
+        "last_updated": "2016-08-04T19:52:33.804Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 35,
+    "fields": {
+        "name": "NDR Spezial 2",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://ndr_spezial-lh.akamaihd.net/i/spezial_2@119228/master.m3u8",
+        "last_updated": "2016-08-04T19:53:09.246Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 36,
+    "fields": {
+        "name": "NDR Spezial 3",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://ndr_spezial-lh.akamaihd.net/i/spezial_3@119229/master.m3u8",
+        "last_updated": "2016-08-04T19:53:24.436Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 37,
+    "fields": {
+        "name": "NDR Event 1",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://ndr_events-lh.akamaihd.net/i/ndrevent_1@119220/master.m3u8",
+        "last_updated": "2016-08-04T19:53:50.069Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 38,
+    "fields": {
+        "name": "NDR Event 2",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://ndr_events-lh.akamaihd.net/i/ndrevent_2@119221/master.m3u8",
+        "last_updated": "2016-08-04T19:54:19.262Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 39,
+    "fields": {
+        "name": "NDR Event 3",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://ndr_events-lh.akamaihd.net/i/ndrevent_3@119222/master.m3u8",
+        "last_updated": "2016-08-04T19:54:26.355Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 40,
+    "fields": {
+        "name": "WDR Event 1",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://wdr_ardevent1-lh.akamaihd.net/i/wdrardevent1_weltweit@112049/master.m3u8",
+        "last_updated": "2016-08-04T19:54:32.041Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 41,
+    "fields": {
+        "name": "WDR Event 2",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://wdr_event2-lh.akamaihd.net/i/wdrevent2_weltweit@112052/master.m3u8",
+        "last_updated": "2016-08-04T19:54:37.994Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 42,
+    "fields": {
+        "name": "WDR Event 3",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://wdr_event3-lh.akamaihd.net/i/wdrevent3_weltweit@112053/master.m3u8",
+        "last_updated": "2016-08-04T19:54:45.702Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 43,
+    "fields": {
+        "name": "WDR Event 4",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://wdr_event4-lh.akamaihd.net/i/wdrevent4_weltweit@112054/master.m3u8",
+        "last_updated": "2016-08-04T19:54:52.371Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 44,
+    "fields": {
+        "name": "WR Event 1",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://swr_event01_uni-lh.akamaihd.net/i/swr_event01@112805/master.m3u8",
+        "last_updated": "2016-08-04T19:55:07.528Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 45,
+    "fields": {
+        "name": "SWR Event 2",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://swr_event02_uni-lh.akamaihd.net/i/swr_event02@112806/master.m3u8",
+        "last_updated": "2016-08-04T19:55:14.149Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 46,
+    "fields": {
+        "name": "ServusTV HD",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://player.hdiosstv-f.akamaihd.net/i/servustvhdde_1@75540/master.m3u8",
+        "last_updated": "2016-08-04T19:55:24.451Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 47,
+    "fields": {
+        "name": "K\u00f6ln.tv",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://dumontuniversal-lh.akamaihd.net/i/dumontuniversal_1@129833/master.m3u8",
+        "last_updated": "2016-08-04T19:55:33.759Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 48,
+    "fields": {
+        "name": "JOIZ HD",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://ooyalahd2-f.akamaihd.net/i/joizgerm01_delivery@324125/master.m3u8",
+        "last_updated": "2016-08-04T19:55:39.590Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 49,
+    "fields": {
+        "name": "TeleZ\u00fcri HD",
+        "htmlscraper": null,
+        "wrapper": null,
+        "stream_url": "http://kalsegsec-a.akamaihd.net/dc-1/m/ny-live-publish2/kLive/smil:1_hoislpiz_all.smil/master.m3u8",
+        "last_updated": "2016-08-04T21:08:10.499Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 65,
+    "fields": {
+        "name": "Olympia 2016, 06.08.2016 00:50 - 04:03 Er\u00f6ffnungsfeier",
+        "htmlscraper": 1,
+        "wrapper": 1,
+        "stream_url": "http://zdf0304-lh.akamaihd.net/i/de03_v1@392855/master.m3u8?dw=0",
+        "last_updated": "2016-08-05T04:00:05.592Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 73,
+    "fields": {
+        "name": "Olympia 2016, 06.08.2016 22:30 - 00:00 (F) Vorrunde Gruppe A (BRA-AUS)",
+        "htmlscraper": 3,
+        "wrapper": 1,
+        "stream_url": "http://zdf0506-lh.akamaihd.net/i/de05_v1@392857/master.m3u8?dw=0",
+        "last_updated": "2016-08-05T04:00:10.699Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 74,
+    "fields": {
+        "name": "Olympia 2016, 07.08.2016 01:30 - 03:00 (F) Vorrunde Gruppe B (GBR-AUS)",
+        "htmlscraper": 3,
+        "wrapper": 1,
+        "stream_url": "http://zdf0304-lh.akamaihd.net/i/de03_v1@392855/master.m3u8?dw=0",
+        "last_updated": "2016-08-05T04:00:10.912Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 75,
+    "fields": {
+        "name": "Olympia 2016, 06.08.2016 20:30 - 21:30 (M) 10m Luftpistole Finale",
+        "htmlscraper": 3,
+        "wrapper": 1,
+        "stream_url": "http://zdf0708-lh.akamaihd.net/i/de07_v1@392868/master.m3u8?dw=0",
+        "last_updated": "2016-08-05T04:00:10.845Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 76,
+    "fields": {
+        "name": "Olympia 2016, 06.08.2016 14:30 - 21:00 (M) Stra\u00dfenrennen",
+        "htmlscraper": 3,
+        "wrapper": 1,
+        "stream_url": "http://zdf0506-lh.akamaihd.net/i/de06_v1@392858/master.m3u8?dw=0",
+        "last_updated": "2016-08-05T04:00:10.755Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 77,
+    "fields": {
+        "name": "Olympia 2016, 06.08.2016 23:00 - 00:30 (M) Vorrunde Gruppe B (CAN-GER)",
+        "htmlscraper": 3,
+        "wrapper": 1,
+        "stream_url": "http://zdf0304-lh.akamaihd.net/i/de04_v1@392856/master.m3u8?dw=0",
+        "last_updated": "2016-08-05T04:00:11.002Z"
+    }
+},
+{
+    "model": "liveplaylist.livesource",
+    "pk": 78,
+    "fields": {
+        "name": "Olympia 2016, 07.08.2016 04:00 - 05:00 (F) SUI - CHN",
+        "htmlscraper": 3,
+        "wrapper": 1,
+        "stream_url": "http://zdf0708-lh.akamaihd.net/i/de08_v1@392869/master.m3u8?dw=0",
+        "last_updated": "2016-08-05T04:00:10.944Z"
+    }
+},
+{
+    "model": "liveplaylist.sourcewrapper",
+    "pk": 1,
+    "fields": {
+        "name": "hlsvariant live-Script @ waldmeister",
+        "stream_url_wrap": "pipe:///home/waldmeister/live hlsvariant://%(stream_url)s"
+    }
+},
+{
+    "model": "liveplaylist.htmlscraper",
+    "pk": 1,
+    "fields": {
+        "name": "ZDF.de (Heute, Olympia)",
+        "main_page_url": "http://www.zdf.de/ZDFmediathek/hauptnavigation/live/day0?flash=off",
+        "main_page_find_stream_xpath": null,
+        "main_page_find_subpages_xpath": "//div[@class=\"beitragListe\"]//p[@class=\"grey\"]/a/@href",
+        "subpage_find_stream_xpath": "//a[@class=\"play\"]/@href",
+        "title_xpaths": "//div[@class=\"beitrag\"]/p[@class=\"datum\"]/text(),//h1/text()",
+        "filter_title_contains": "Olympia 2016",
+        "default_wrapper": 1
+    }
+},
+{
+    "model": "liveplaylist.htmlscraper",
+    "pk": 2,
+    "fields": {
+        "name": "ARD",
+        "main_page_url": "http://rio.sportschau.de/rio2016/live/widget100-extapponly.html",
+        "main_page_find_stream_xpath": null,
+        "main_page_find_subpages_xpath": "//div[@id=\"epgContainer\"]/div/@data-id",
+        "subpage_find_stream_xpath": "//div",
+        "title_xpaths": "",
+        "filter_title_contains": "",
+        "default_wrapper": null
+    }
+},
+{
+    "model": "liveplaylist.htmlscraper",
+    "pk": 3,
+    "fields": {
+        "name": "ZDF.de (Morgen, Olympia)",
+        "main_page_url": "http://www.zdf.de/ZDFmediathek/hauptnavigation/live/day1?flash=off",
+        "main_page_find_stream_xpath": null,
+        "main_page_find_subpages_xpath": "//div[@class=\"beitragListe\"]//p[@class=\"grey\"]/a/@href",
+        "subpage_find_stream_xpath": "//a[@class=\"play\"]/@href",
+        "title_xpaths": "//div[@class=\"beitrag\"]/p[@class=\"datum\"]/text(),//h1/text()",
+        "filter_title_contains": "Olympia 2016",
+        "default_wrapper": 1
+    }
+},
+{
+    "model": "liveplaylist.playlistupdate",
+    "pk": 1,
+    "fields": {
+        "playlist": 1,
+        "delete_obsolete_streams": true,
+        "livechannel_naming": 1,
+        "htmlscrapers": [
+            1,
+            3
+        ]
+    }
+}
+]

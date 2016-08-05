@@ -1,0 +1,6 @@
+#!/bin/bash
+trap 'kill -9 $PID 2>/dev/null' EXIT
+
+livestreamer -O "$1" best || ffmpeg -loglevel fatal -i "pipe:0" -vcodec copy -acodec copy -metadata service_provider=STRING -metadata service_name=STRING -f mpegts -tune zerolatency pipe:1
+PID=$!
+wait $PID

@@ -39,12 +39,13 @@ class PlaylistChannel(models.Model):
     position = models.PositiveIntegerField()
 
     def get_entry_name(self):
+        scraper_display = self.livechannel.source.htmlscraper.display_name
         return self.playlist.channel_naming % {
             'playlist': self.playlist.name,
             'channel': self.livechannel.name,
             'position': self.position,
             'extra': self.playlist.channel_naming_extra,
-            'scraper': self.livechannel.source.htmlscraper
+            'scraper': scraper_display
         }
 
     def __unicode__(self):
@@ -105,6 +106,7 @@ class SourceWrapper(models.Model):
 
 class HTMLScraper(models.Model):
     name = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=100, default='')
     main_page_url = models.URLField()
     main_page_find_stream_xpath = models.CharField(max_length=255, null=True, blank=True)
     main_page_find_subpages_xpath = models.CharField(max_length=255, null=True, blank=True)

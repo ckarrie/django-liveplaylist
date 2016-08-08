@@ -1,5 +1,5 @@
 #EXTM3U
 {% for plc in object.playlistchannel_set.all %}
-#EXTINF:-1, {{ plc.get_entry_name }}
+#EXTINF:0,{{ plc.get_entry_name }}
 {% if unwrap %}{{ plc.livechannel.get_unwrapped_stream_url }}{% else %}{{ plc.livechannel.get_wrapped_stream_url }}{% endif %}
 {% endfor %}

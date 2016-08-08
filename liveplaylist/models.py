@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import utils
 import validators
 from django.db import models
+from django.utils import timezone
 
 
 class Playlist(models.Model):
@@ -90,6 +91,8 @@ class LiveSource(models.Model):
     wrapper = models.ForeignKey('liveplaylist.SourceWrapper', null=True, blank=True)
     stream_url = models.CharField(max_length=255)
     last_updated = models.DateTimeField(auto_now=True)
+    start_dt = models.DateTimeField(null=True, blank=True)
+    end_dt = models.DateTimeField(null=True, blank=True)
 
     def get_wrapper_string(self):
         if self.wrapper_id:
@@ -121,6 +124,13 @@ class HTMLScraper(models.Model):
     title_xpaths = models.CharField(max_length=255, null=True, blank=True)
     filter_title_contains = models.CharField(max_length=255, null=True, blank=True)
     default_wrapper = models.ForeignKey(SourceWrapper, null=True, blank=True)
+    scraper_type = models.CharField(
+        choices=(
+            ('ZDFScraperPage', 'ZDFScraperPage'),
+        ),
+        null=True, blank=True,
+        max_length=255
+    )
 
     def __unicode__(self):
         return self.name
@@ -155,14 +165,14 @@ class PlaylistUpdate(models.Model):
                 livechannel_title_index=self.livechannel_naming,
                 delete_obsolete_streams=self.delete_obsolete_streams
             )
-            created_livechannels.extend(scraper_results['created_livechannels'])
-
-        for lc in created_livechannels:
-            new_pos = self.playlist.playlistchannel_set.aggregate(max_pos=models.Max('position')).get('max_pos', 0) + 1
-            self.playlist.playlistchannel_set.create(
-                livechannel=lc,
-                position=new_pos
-            )
+            LiveChannel.objects.filter(source__htmlscraper_id=scraper.id, source__end_dt__lte=timezone.now()).delete()
+            current_livechannels = LiveChannel.objects.filter(source__htmlscraper_id=scraper.id).order_by('source__start_dt')
+            for lc in current_livechannels:
+                new_pos = self.playlist.playlistchannel_set.aggregate(max_pos=models.Max('position')).get('max_pos', 0) + 1
+                self.playlist.playlistchannel_set.create(
+                    livechannel=lc,
+                    position=new_pos
+                )
 
         return created_livechannels
 

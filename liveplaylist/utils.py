@@ -1,6 +1,11 @@
 from collections import OrderedDict
+from django.utils import six
 from urlparse import urlsplit, urlunsplit
-from django.apps import apps
+import datetime
+import re
+
+
+
 
 def get_m3u(playlist):
     m3u_lines = [u'#EXTM3U']
@@ -19,6 +24,17 @@ def make_absolute(base_url, path):
     else:
         url = path
     return url
+
+
+class ScraperPage(object):
+    titles = []
+    epg_text = []
+    start_time = None
+    end_time = None
+    icon = ''
+
+    def get_icon_from_subpage(self, pagetree):
+        raise NotImplementedError()
 
 
 def start_scraper(scraper):
@@ -41,6 +57,7 @@ def start_scraper(scraper):
         subpage_htmlpage = requests.get(subpage_url)
         subpage_tree = html.fromstring(subpage_htmlpage.content)
         subpage_streams = subpage_tree.xpath(scraper.subpage_find_stream_xpath)
+        subpage_icon = "http://www.zdf.de/ZDFmediathek/contentblob/2686324/timg485x273blob/13882596"
 
         title_xpaths = scraper.title_xpaths.split(',') if ',' in scraper.title_xpaths else []
         title = u''
@@ -53,37 +70,38 @@ def start_scraper(scraper):
 
         titles_tuple = tuple(titles_tuple)
 
-        if scraper.filter_title_contains:
-            if scraper.filter_title_contains in title:
-                found_streams[titles_tuple] = subpage_streams
-        else:
-            found_streams[titles_tuple] = subpage_streams
+        if scraper.filter_title_contains and scraper.filter_title_contains not in title:
+            continue
+
+        for sub_stream in subpage_streams:
+            if sub_stream in found_streams:
+                found_streams[sub_stream].append(titles_tuple)
+            else:
+                found_streams[sub_stream] = [titles_tuple, ]
 
     return found_streams
 
 
 def delete_streams_not_in_scraper(scraper, found_streams):
-    found_stream_urls = []
+    found_stream_urls = found_streams.keys()
     deleted_livesources = []
-    for titles_tuple, streams in found_streams.items():
-        for stream in streams:
-            found_stream_urls.append(stream)
 
-    found_unique_stream_urls = list(set(found_stream_urls))
-    if len(found_stream_urls) != len(found_unique_stream_urls):
-        print "hmmm"
-
-    for found_steam_url in found_unique_stream_urls:
+    for found_steam_url in found_stream_urls:
         not_found_urls = scraper.livesource_set.exclude(stream_url=found_steam_url)
         for ls in not_found_urls:
             deleted_livesources.append(u'%(ls)s URL=%(url)s' % {'ls': ls.name, 'url': ls.stream_url})
-            ls.delete()
+            #ls.delete()
 
     return deleted_livesources
 
 
 def process_scraper(scraper, livechannel_title_index=None, delete_obsolete_streams=True):
     found_streams = start_scraper(scraper=scraper)
+    for streams, titles_tuple in found_streams.items():
+        print streams
+        for title in titles_tuple:
+            print "- ", title
+
     scraper_results = {
         'created_livechannels': [],
         'created_livesources': [],
@@ -92,32 +110,59 @@ def process_scraper(scraper, livechannel_title_index=None, delete_obsolete_strea
     # cleanup
     if delete_obsolete_streams:
         scraper_results['deleted_livesource'] = delete_streams_not_in_scraper(scraper, found_streams)
+        for dlc in scraper_results['deleted_livesource']:
+            print dlc
 
     # map to LiveSources
 
-    for titles_tuple, streams in found_streams.items():
-        for stream in streams:
-            existing_same_streams = scraper.livesource_set.filter(stream_url=stream)
+    for stream_url, titles_tuples in found_streams.items():
+        for titles_tuple in titles_tuples:
+            full_title = u' '.join(titles_tuple)
+            start_end_text = titles_tuple[0].replace("Olympia 2016, ", "").split(" - ")
+            stream_start_dt = None
+            stream_end_time = None
+            stream_end_dt = None
+            zdf_start_regex = re.compile(r'(?P<day>\d{1,2}).(?P<month>\d{1,2}).(?P<year>\d{4}) '
+                                         r'(?P<hour>\d{1,2}):(?P<minute>\d{1,2})')
+            zdf_end_regex = re.compile(r'(?P<hour>\d{1,2}):(?P<minute>\d{1,2})')
+            zdf_start_regex_match = zdf_start_regex.match(start_end_text[0])
+            zdf_end_regex_match = zdf_end_regex.match(start_end_text[1])
+            if zdf_start_regex_match:
+                kw = {k: int(v) for k, v in six.iteritems(zdf_start_regex_match.groupdict())}
+                stream_start_dt = datetime.datetime(**kw)
+
+            if zdf_end_regex_match:
+                kw = {k: int(v) for k, v in six.iteritems(zdf_end_regex_match.groupdict())}
+                stream_end_time = datetime.time(**kw)
+
+            if stream_start_dt is not None and stream_end_time is not None:
+                stream_end_dt = datetime.datetime(year=stream_start_dt.year, month=stream_start_dt.month,
+                                                  day=stream_start_dt.day,
+                                                  hour=stream_end_time.hour, minute=stream_end_time.minute)
+
+                if stream_start_dt is not None and stream_end_time < stream_start_dt.time():
+                    stream_end_dt = stream_end_dt + datetime.timedelta(days=+1)
+
             full_title = u' '.join(titles_tuple)
             if livechannel_title_index is not None:
                 livechannel_title = titles_tuple[livechannel_title_index]
             else:
                 livechannel_title = full_title
 
-            if not existing_same_streams.exists():
-                ls, ls_created = scraper.livesource_set.get_or_create(
-                    stream_url=stream,
-                    defaults={
-                        'wrapper': scraper.default_wrapper,
-                        'name': full_title,
-                    }
-                )
-                if ls_created:
-                    scraper_results['created_livesources'].append(ls)
+            ls, ls_created = scraper.livesource_set.get_or_create(
+                stream_url=stream_url,
+                start_dt=stream_start_dt,
+                end_dt=stream_end_dt,
+                defaults={
+                    'wrapper': scraper.default_wrapper,
+                    'name': full_title,
+                }
+            )
+            if ls_created:
+                scraper_results['created_livesources'].append(ls)
             else:
-                for ls in existing_same_streams:
-                    ls.name = full_title
-                    ls.save()
+                ls.name = full_title
+                ls.save()
 
             lc, lc_created = ls.livechannel_set.get_or_create(
                 source=ls,

@@ -2,6 +2,7 @@ import models
 from django.apps import apps
 from django.views import generic
 from django.db.models import Q
+from django.utils import timezone
 
 
 class IndexView(generic.TemplateView):
@@ -16,7 +17,9 @@ class IndexView(generic.TemplateView):
         ctx.update({
             'playlists': playlists.filter(pl_filter),
             'scrapers': apps.get_model('liveplaylist.HTMLScraper').objects.all(),
-            'livechannels': apps.get_model('liveplaylist.LiveChannel').objects.all(),
+            'livechannels': apps.get_model('liveplaylist.LiveChannel').objects.filter(
+                Q(source__end_dt__isnull=True) | Q(source__end_dt__gte=timezone.now())
+            ).order_by('name', 'source__start_dt', 'source__last_updated'),
         })
         return ctx
 

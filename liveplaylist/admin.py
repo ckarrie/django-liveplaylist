@@ -17,10 +17,11 @@ class PlaylistChannelAdmin(admin.ModelAdmin):
 
 class LiveChannelAdmin(admin.ModelAdmin):
     list_display = ['name', 'source', 'get_wrapped_stream_url']
+    list_filter = ['source__htmlscraper']
 
 
 class LiveSourceAdmin(admin.ModelAdmin):
-    list_display = ['htmlscraper', 'name', 'wrapper', 'stream_url']
+    list_display = ['htmlscraper', 'name', 'wrapper', 'stream_url', 'start_dt', 'end_dt']
     list_filter = ['htmlscraper', 'wrapper']
 
 

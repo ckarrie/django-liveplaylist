@@ -29,18 +29,11 @@ class PlayListM3UView(generic.DetailView):
     model = models.Playlist
     content_type = 'audio/x-mpegurl'
 
-    def get_queryset(self):
-        qs = super(PlayListM3UView, self).get_queryset()
-        qs = qs.filter(
-            Q(source__end_dt__isnull=True) |
-            Q(source__end_dt__gte=timezone.now(), source__start_dt__lte=timezone.now())
-        )
-        return qs
-
     def get_context_data(self, **kwargs):
         ctx = super(PlayListM3UView, self).get_context_data(**kwargs)
         unwrap = self.request.GET.get('unwrap') == '1'
         ctx.update({
-            'unwrap': unwrap
+            'unwrap': unwrap,
+            'current_playlistchannels': self.object.get_current_playlistchannels()
         })
         return ctx

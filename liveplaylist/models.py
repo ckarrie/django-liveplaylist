@@ -26,6 +26,12 @@ class Playlist(models.Model):
     def get_m3u(self):
         return utils.get_m3u(self)
 
+    def get_current_playlistchannels(self):
+        return self.playlistchannel_set.filter(
+            models.Q(livechannel__source__end_dt__isnull=True) |
+            models.Q(livechannel__source__end_dt__gte=timezone.now(), livechannel__source__start_dt__lte=timezone.now())
+        )
+
     @models.permalink
     def get_m3u_url(self):
         return ('pl_m3u', None, {'pk': self.pk},)

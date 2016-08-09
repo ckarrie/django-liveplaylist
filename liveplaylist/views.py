@@ -20,6 +20,7 @@ class IndexView(generic.TemplateView):
             'livechannels': apps.get_model('liveplaylist.LiveChannel').objects.filter(
                 Q(source__end_dt__isnull=True) | Q(source__end_dt__gte=timezone.now())
             ).order_by('name', 'source__start_dt', 'source__last_updated'),
+            'wrappers': apps.get_model('liveplaylist.SourceWrapper').objects.all()
         })
         return ctx
 
@@ -32,9 +33,16 @@ class PlayListM3UView(generic.DetailView):
     def get_context_data(self, **kwargs):
         ctx = super(PlayListM3UView, self).get_context_data(**kwargs)
         unwrap = self.request.GET.get('unwrap') == '1'
+        wrapper_id = self.request.GET.get('wrapper')
+        if wrapper_id:
+            wrapper = models.SourceWrapper.objects.get(id=wrapper_id)
+            current_playlistchannels = self.object.get_current_playlistchannels(wrapper=wrapper)
+        else:
+            current_playlistchannels = self.object.get_current_playlistchannels()
+
         ctx.update({
             'unwrap': unwrap,
-            'current_playlistchannels': self.object.get_current_playlistchannels()
+            'current_playlistchannels': current_playlistchannels
         })
         return ctx
 

@@ -26,11 +26,15 @@ class Playlist(models.Model):
     def get_m3u(self):
         return utils.get_m3u(self)
 
-    def get_current_playlistchannels(self):
-        return self.playlistchannel_set.filter(
+    def get_current_playlistchannels(self, wrapper=None):
+        plcs = self.playlistchannel_set.filter(
             models.Q(livechannel__source__end_dt__isnull=True) |
             models.Q(livechannel__source__end_dt__gte=timezone.now(), livechannel__source__start_dt__lte=timezone.now())
         )
+        for plc in plcs:
+            wrapped_stream_url = plc.livechannel.get_wrapped_stream_url(wrapper=wrapper)
+            plc.wrapped_stream_url = wrapped_stream_url
+        return plcs
 
     @models.permalink
     def get_m3u_url(self):
@@ -74,9 +78,9 @@ class LiveChannel(models.Model):
     name = models.CharField(max_length=255)
     source = models.ForeignKey('liveplaylist.LiveSource')
 
-    def get_wrapped_stream_url(self):
+    def get_wrapped_stream_url(self, wrapper=None):
         stream_url = self.source.stream_url
-        wrapper_string = self.source.get_wrapper_string()
+        wrapper_string = self.source.get_wrapper_string(wrapper=None)
         return wrapper_string % {'stream_url': stream_url}
 
     def get_unwrapped_stream_url(self):
@@ -104,7 +108,9 @@ class LiveSource(models.Model):
         if self.start_dt and self.end_dt:
             return self.start_dt <= timezone.now() <= self.end_dt
 
-    def get_wrapper_string(self):
+    def get_wrapper_string(self, wrapper=None):
+        if wrapper:
+            return wrapper.stream_url_wrap
         if self.wrapper_id:
             return self.wrapper.stream_url_wrap
         return '%(stream_url)s'

@@ -21,7 +21,7 @@
                             <th>Tags</th>
                             <th>Kanäle</th>
                             <th>Start</th>
-                            <th>Download</th>
+                            <th>Wrapper-ID</th>
                         </tr>
                         {% for pl in playlists %}
                             <tr>
@@ -53,8 +53,10 @@
                                 </td>
                                 <td>
                                     <p class="aui-buttons">
-                                        <a class="aui-button" href="{{ pl.get_m3u_url }}">M3U</a>
-                                        <a class="aui-button" href="{{ pl.get_m3u_url }}?unwrap=1">M3U (wrapped)</a>
+                                        <a class="aui-button" href="{{ pl.get_m3u_url }}?unwrap=1">Raw</a>
+                                        {% for w in wrappers %}
+                                            <a class="aui-button" href="{{ pl.get_m3u_url }}?wrapper={{ w.id }}" title="{{ w.name }}">{{ w.id }}</a>
+                                        {% endfor %}
                                     </p>
                                 </td>
                             </tr>

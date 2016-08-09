@@ -58,10 +58,10 @@
                                             <a class="aui-button aui-button-primary" href="{{ pl.get_m3u_url }}?wrapper={{ w.id }}" title="{{ w.name }}">{{ w.id }}</a>
                                         {% endfor %}
                                     </p>
-                                    <p class="aui-buttons">
-                                        <a class="aui-button" href="{{ pl.get_m3u_url }}?unwrap=1&as_text=1">Raw</a>
+                                    <p>Text:
+                                        <a href="{{ pl.get_m3u_url }}?unwrap=1&as_text=1">Raw</a>
                                         {% for w in wrappers %}
-                                            <a class="aui-button" href="{{ pl.get_m3u_url }}?wrapper={{ w.id }}&as_text=1" title="{{ w.name }}">{{ w.id }}</a>
+                                            <a href="{{ pl.get_m3u_url }}?wrapper={{ w.id }}&as_text=1" title="{{ w.name }}">{{ w.id }}</a>
                                         {% endfor %}
                                     </p>
                                 </td>

@@ -176,13 +176,20 @@ class PlaylistUpdate(models.Model):
                 delete_obsolete_streams=self.delete_obsolete_streams
             )
             LiveChannel.objects.filter(source__htmlscraper_id=scraper.id, source__end_dt__lte=timezone.now()).delete()
-            current_livechannels = LiveChannel.objects.filter(source__htmlscraper_id=scraper.id).order_by('source__start_dt')
+            current_livechannels = LiveChannel.objects.filter(
+                source__htmlscraper_id=scraper.id
+            ).order_by('source__start_dt')
             for lc in current_livechannels:
                 new_pos = self.playlist.playlistchannel_set.aggregate(max_pos=models.Max('position')).get('max_pos', 0) + 1
-                self.playlist.playlistchannel_set.create(
+                pc, pc_created = self.playlist.playlistchannel_set.get_or_create(
                     livechannel=lc,
-                    position=new_pos
+                    defaults={
+                        'position': new_pos
+                    }
                 )
+            #for ex_plc in self.playlist.playlistchannel_set.filter(source__htmlscraper_id=scraper.id):
+            #    if ex_plc.livechannel not in current_livechannels:
+            #        ex_plc.delete()
 
         return created_livechannels
 

@@ -114,7 +114,7 @@ class LiveSource(models.Model):
 
 
 class SourceWrapper(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=500)
     stream_url_wrap = models.CharField(
         max_length=255, default='%(stream_url)s',
         validators=[validators.validate_wrapper_string]

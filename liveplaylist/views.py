@@ -37,3 +37,9 @@ class PlayListM3UView(generic.DetailView):
             'current_playlistchannels': self.object.get_current_playlistchannels()
         })
         return ctx
+
+    def render_to_response(self, context, **response_kwargs):
+        as_text = self.request.GET.get('as_text') == '1'
+        if as_text:
+            self.content_type = 'text/plain'
+        return super(PlayListM3UView, self).render_to_response(context, **response_kwargs)

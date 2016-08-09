@@ -80,7 +80,7 @@ class LiveChannel(models.Model):
 
     def get_wrapped_stream_url(self, wrapper=None):
         stream_url = self.source.stream_url
-        wrapper_string = self.source.get_wrapper_string(wrapper=None)
+        wrapper_string = self.source.get_wrapper_string(wrapper=wrapper)
         return wrapper_string % {'stream_url': stream_url}
 
     def get_unwrapped_stream_url(self):

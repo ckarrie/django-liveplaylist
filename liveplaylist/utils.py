@@ -110,8 +110,8 @@ def process_scraper(scraper, livechannel_title_index=None, delete_obsolete_strea
     # cleanup
     if delete_obsolete_streams:
         scraper_results['deleted_livesource'] = delete_streams_not_in_scraper(scraper, found_streams)
-        for dlc in scraper_results['deleted_livesource']:
-            print dlc
+        #for dlc in scraper_results['deleted_livesource']:
+        #    print dlc
 
     # map to LiveSources
 

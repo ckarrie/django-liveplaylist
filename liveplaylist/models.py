@@ -100,6 +100,10 @@ class LiveSource(models.Model):
     start_dt = models.DateTimeField(null=True, blank=True)
     end_dt = models.DateTimeField(null=True, blank=True)
 
+    def currently_live(self):
+        if self.start_dt and self.end_dt:
+            return self.start_dt <= timezone.now() <= self.end_dt
+
     def get_wrapper_string(self):
         if self.wrapper_id:
             return self.wrapper.stream_url_wrap

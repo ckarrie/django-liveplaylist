@@ -20,28 +20,44 @@
                             <th>Name</th>
                             <th>Tags</th>
                             <th>Kanäle</th>
-                            <th>Wrapped Playlist</th>
-                            <th>Playlist</th>
+                            <th>Start</th>
+                            <th>Download</th>
                         </tr>
                         {% for pl in playlists %}
-                        <tr>
-                            <td>{{ pl.owner }}</td>
-                            <td>{{ pl.name }}</td>
-                            <td>
-                                {% if pl.public %}
-                                <span class="aui-lozenge aui-lozenge-success aui-lozenge-subtle">Öffentlich</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <ul>
+                            <tr>
+                                <td>{{ pl.owner }}</td>
+                                <td>{{ pl.name }}</td>
+                                <td>
+                                    {% if pl.public %}
+                                    <span class="aui-lozenge aui-lozenge-success aui-lozenge-subtle">Öffentlich</span>
+                                    {% endif %}
+                                </td>
+                                <td>
                                     {% for plc in pl.playlistchannel_set.all %}
-                                    <li>{{ plc.get_entry_name }}</li>
+                                        <p>{{ plc.get_entry_name }}</p>
                                     {% endfor %}
-                                </ul>
-                            </td>
-                            <td><a href="{{ pl.get_m3u_url }}">{{ pl.get_m3u_url }}</a></td>
-                            <td><a href="{{ pl.get_m3u_url }}?unwrap=1">{{ pl.get_m3u_url }}?unwrap=1</a></td>
-                        </tr>
+                                </td>
+                                <td>
+                                        {% for plc in pl.playlistchannel_set.all %}
+                                        <p>
+                                            {% if plc.livechannel.source.currently_live %}
+                                                <span class="aui-lozenge aui-lozenge-error aui-lozenge-subtle">Live</span>
+                                            {% else %}
+                                                {% if plc.livechannel.source.start_dt %}
+                                                    in {{ plc.livechannel.source.start_dt|timeuntil }}
+                                                {% endif %}
+                                            {% endif %}
+                                            &nbsp;
+                                        </p>
+                                        {% endfor %}
+                                </td>
+                                <td>
+                                    <p class="aui-buttons">
+                                        <a class="aui-button" href="{{ pl.get_m3u_url }}">M3U</a>
+                                        <a class="aui-button" href="{{ pl.get_m3u_url }}?unwrap=1">M3U (wrapped)</a>
+                                    </p>
+                                </td>
+                            </tr>
                         {% endfor %}
                     </table>
                     <p></p>

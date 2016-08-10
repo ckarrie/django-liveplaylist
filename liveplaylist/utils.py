@@ -59,7 +59,7 @@ def start_scraper(scraper):
         subpage_streams = subpage_tree.xpath(scraper.subpage_find_stream_xpath)
         subpage_icon = "http://www.zdf.de/ZDFmediathek/contentblob/2686324/timg485x273blob/13882596"
 
-        title_xpaths = scraper.title_xpaths.split(',') if ',' in scraper.title_xpaths else []
+        title_xpaths = scraper.title_xpaths.split(',') if ',' in scraper.title_xpaths else [scraper.title_xpaths]
         title = u''
         titles_tuple = []
         for title_xpath in title_xpaths:

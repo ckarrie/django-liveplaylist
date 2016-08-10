@@ -16,17 +16,21 @@ class PlaylistChannelAdmin(admin.ModelAdmin):
 
 
 class LiveChannelAdmin(admin.ModelAdmin):
+    search_fields = ['name', ]
     list_display = ['name', 'source', 'get_wrapped_stream_url']
     list_filter = ['source__htmlscraper']
 
 
 class LiveSourceAdmin(admin.ModelAdmin):
-    list_display = ['htmlscraper', 'name', 'wrapper', 'stream_url', 'start_dt', 'end_dt']
+    search_fields = ['name', 'stream_url']
+    list_display = ['name', 'htmlscraper', 'wrapper', 'stream_url', 'start_dt', 'end_dt']
     list_filter = ['htmlscraper', 'wrapper']
 
 
 class HTMLScraperAdmin(admin.ModelAdmin):
-    actions = ['scrape_channels',]
+    search_fields = ['name', ]
+    list_display = ['name', 'display_name', 'scraper_type', 'default_wrapper']
+    actions = ['scrape_channels', ]
 
     def scrape_channels(self, request, queryset):
         for obj in queryset:

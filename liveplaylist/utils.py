@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from django.utils import six
+from django.utils import six, timezone
 from urlparse import urlsplit, urlunsplit
 import datetime
 import re
@@ -118,30 +118,35 @@ def process_scraper(scraper, livechannel_title_index=None, delete_obsolete_strea
     for stream_url, titles_tuples in found_streams.items():
         for titles_tuple in titles_tuples:
             full_title = u' '.join(titles_tuple)
-            start_end_text = titles_tuple[0].replace("Olympia 2016, ", "").split(" - ")
-            stream_start_dt = None
-            stream_end_time = None
-            stream_end_dt = None
-            zdf_start_regex = re.compile(r'(?P<day>\d{1,2}).(?P<month>\d{1,2}).(?P<year>\d{4}) '
-                                         r'(?P<hour>\d{1,2}):(?P<minute>\d{1,2})')
-            zdf_end_regex = re.compile(r'(?P<hour>\d{1,2}):(?P<minute>\d{1,2})')
-            zdf_start_regex_match = zdf_start_regex.match(start_end_text[0])
-            zdf_end_regex_match = zdf_end_regex.match(start_end_text[1])
-            if zdf_start_regex_match:
-                kw = {k: int(v) for k, v in six.iteritems(zdf_start_regex_match.groupdict())}
-                stream_start_dt = datetime.datetime(**kw)
+            if scraper.scraper_type == u'ZDFScraperPage':
+                start_end_text = titles_tuple[0].replace("Olympia 2016, ", "").split(" - ")
+                stream_start_dt = None
+                stream_end_time = None
+                stream_end_dt = None
+                zdf_start_regex = re.compile(r'(?P<day>\d{1,2}).(?P<month>\d{1,2}).(?P<year>\d{4}) '
+                                             r'(?P<hour>\d{1,2}):(?P<minute>\d{1,2})')
+                zdf_end_regex = re.compile(r'(?P<hour>\d{1,2}):(?P<minute>\d{1,2})')
+                zdf_start_regex_match = zdf_start_regex.match(start_end_text[0])
+                zdf_end_regex_match = zdf_end_regex.match(start_end_text[1])
+                if zdf_start_regex_match:
+                    kw = {k: int(v) for k, v in six.iteritems(zdf_start_regex_match.groupdict())}
+                    stream_start_dt = datetime.datetime(**kw)
 
-            if zdf_end_regex_match:
-                kw = {k: int(v) for k, v in six.iteritems(zdf_end_regex_match.groupdict())}
-                stream_end_time = datetime.time(**kw)
+                if zdf_end_regex_match:
+                    kw = {k: int(v) for k, v in six.iteritems(zdf_end_regex_match.groupdict())}
+                    stream_end_time = datetime.time(**kw)
 
-            if stream_start_dt is not None and stream_end_time is not None:
-                stream_end_dt = datetime.datetime(year=stream_start_dt.year, month=stream_start_dt.month,
-                                                  day=stream_start_dt.day,
-                                                  hour=stream_end_time.hour, minute=stream_end_time.minute)
+                if stream_start_dt is not None and stream_end_time is not None:
+                    stream_end_dt = datetime.datetime(year=stream_start_dt.year, month=stream_start_dt.month,
+                                                      day=stream_start_dt.day,
+                                                      hour=stream_end_time.hour, minute=stream_end_time.minute)
 
-                if stream_start_dt is not None and stream_end_time < stream_start_dt.time():
-                    stream_end_dt = stream_end_dt + datetime.timedelta(days=+1)
+                    if stream_start_dt is not None and stream_end_time < stream_start_dt.time():
+                        stream_end_dt = stream_end_dt + datetime.timedelta(days=+1)
+
+            else:
+                stream_start_dt = timezone.now()
+                stream_end_dt = stream_start_dt + datetime.timedelta(days=365 * 2)
 
             full_title = u' '.join(titles_tuple)
             if livechannel_title_index is not None:

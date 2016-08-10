@@ -100,6 +100,7 @@ class LiveSource(models.Model):
     htmlscraper = models.ForeignKey('liveplaylist.HTMLScraper', null=True, blank=True)
     wrapper = models.ForeignKey('liveplaylist.SourceWrapper', null=True, blank=True)
     stream_url = models.CharField(max_length=255)
+    stream_logo_url = models.CharField(max_length=500, null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
     start_dt = models.DateTimeField(null=True, blank=True)
     end_dt = models.DateTimeField(null=True, blank=True)

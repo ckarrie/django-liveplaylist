@@ -70,7 +70,8 @@ def start_scraper(scraper):
 
         titles_tuple = tuple(titles_tuple)
 
-        if scraper.filter_title_contains and scraper.filter_title_contains not in title:
+        if scraper.filter_title_contains and len(scraper.filter_title_contains) > 1 and scraper.filter_title_contains not in title:
+            print "--- skipping title ---", title, titles, titles_tuple
             continue
 
         for sub_stream in subpage_streams:

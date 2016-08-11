@@ -34,7 +34,7 @@
                                 </td>
                                 <td>
                                     {% for plc in pl.playlistchannel_set.all %}
-                                        <p>{{ plc.get_entry_name }}</p>
+                                        <p>{{ plc.get_entry_name|truncatechars:25 }}</p>
                                     {% endfor %}
                                 </td>
                                 <td>
@@ -44,7 +44,8 @@
                                                 <span class="aui-lozenge aui-lozenge-error aui-lozenge-subtle">Live</span>
                                             {% else %}
                                                 {% if plc.livechannel.source.start_dt %}
-                                                    in {{ plc.livechannel.source.start_dt|timeuntil }}
+                                                    <span class="aui-lozenge aui-lozenge-current aui-lozenge-subtle">in {{ plc.livechannel.source.start_dt|timeuntil }}</span>
+
                                                 {% endif %}
                                             {% endif %}
                                             &nbsp;

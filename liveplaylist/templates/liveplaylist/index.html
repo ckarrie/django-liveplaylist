@@ -18,39 +18,42 @@
                         <tr>
                             <th>User</th>
                             <th>Name</th>
-                            <th>Tags</th>
-                            <th>Kanäle</th>
+                            <th colspan="2">Kanäle</th>
                             <th>Start</th>
                             <th>Wrapper-ID</th>
                         </tr>
                         {% for pl in playlists %}
                             <tr>
                                 <td>{{ pl.owner }}</td>
-                                <td>{{ pl.name }}</td>
                                 <td>
+                                    {{ pl.name }}
                                     {% if pl.public %}
-                                    <span class="aui-lozenge aui-lozenge-success aui-lozenge-subtle">Öffentlich</span>
+                                        <p><span class="aui-lozenge aui-lozenge-success aui-lozenge-subtle">Öffentlich</span></p>
                                     {% endif %}
                                 </td>
-                                <td>
-                                    {% for plc in pl.playlistchannel_set.all %}
-                                        <p>{{ plc.get_entry_name|truncatechars:25 }}</p>
-                                    {% endfor %}
-                                </td>
-                                <td>
+                                <td colspan="2">
+                                    <table class="aui">
                                         {% for plc in pl.playlistchannel_set.all %}
-                                        <p>
-                                            {% if plc.livechannel.source.currently_live %}
-                                                <span class="aui-lozenge aui-lozenge-error aui-lozenge-subtle">Live</span>
-                                            {% else %}
-                                                {% if plc.livechannel.source.start_dt %}
-                                                    <span class="aui-lozenge aui-lozenge-current aui-lozenge-subtle">in {{ plc.livechannel.source.start_dt|timeuntil }}</span>
+                                            <tr>
+                                                <td><p>{{ plc.get_entry_name|truncatechars:25 }}</p></td>
 
-                                                {% endif %}
-                                            {% endif %}
-                                            &nbsp;
-                                        </p>
+                                                <td>
+                                                    <p>
+                                                    {% if plc.livechannel.source.currently_live %}
+                                                        <span class="aui-lozenge aui-lozenge-error aui-lozenge-subtle">Live</span>
+                                                    {% else %}
+                                                        {% if plc.livechannel.source.start_dt %}
+                                                            <span class="aui-lozenge aui-lozenge-current aui-lozenge-subtle">in {{ plc.livechannel.source.start_dt|timeuntil }}</span>
+
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    &nbsp;
+                                                    </p>
+                                                </td>
+                                            </tr>
                                         {% endfor %}
+                                    </table>
+
                                 </td>
                                 <td>
                                     <p class="aui-buttons">

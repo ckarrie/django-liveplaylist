@@ -39,7 +39,7 @@
                                                 <td>
                                                     <p>
                                                     {% if plc.livechannel.source.currently_live %}
-                                                        <span class="aui-lozenge aui-lozenge-error aui-lozenge-subtle">Live</span>
+                                                        <span class="aui-lozenge aui-lozenge-error aui-lozenge-subtle">Live seit {{ plc.livechannel.source.start_dt|timesince }}</span>
                                                     {% else %}
                                                         {% if plc.livechannel.source.start_dt %}
                                                             <span class="aui-lozenge aui-lozenge-current aui-lozenge-subtle">in {{ plc.livechannel.source.start_dt|timeuntil }}</span>

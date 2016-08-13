@@ -30,7 +30,10 @@ class Playlist(models.Model):
     def get_current_playlistchannels(self, wrapper=None):
         plcs = self.playlistchannel_set.filter(
             models.Q(livechannel__source__end_dt__isnull=True) |
-            models.Q(livechannel__source__end_dt__gte=timezone.now(), livechannel__source__start_dt__lte=timezone.now())
+            models.Q(
+                livechannel__source__end_dt__gte=timezone.now() - datetime.timedelta(minutes=10),
+                livechannel__source__start_dt__lte=timezone.now() + datetime.timedelta(minutes=10)
+            )
         )
         for plc in plcs:
             wrapped_stream_url = plc.livechannel.get_wrapped_stream_url(wrapper=wrapper)
@@ -106,13 +109,10 @@ class LiveSource(models.Model):
     start_dt = models.DateTimeField(null=True, blank=True)
     end_dt = models.DateTimeField(null=True, blank=True)
 
-    def currently_live(self, tolerance=datetime.timedelta(minutes=10)):
+    def currently_live(self):
         if self.start_dt and self.end_dt:
             start = self.start_dt
             end = self.end_dt
-            if tolerance:
-                start -= tolerance
-                end += tolerance
             return start <= timezone.now() <= end
 
     def get_wrapper_string(self, wrapper=None):

@@ -5,8 +5,6 @@ import datetime
 import re
 
 
-
-
 def get_m3u(playlist):
     m3u_lines = [u'#EXTM3U']
     for plc in playlist.playlistchannel_set.order_by('position'):
@@ -46,6 +44,7 @@ def start_scraper(scraper):
     base_url = scraper.main_page_url
     tree = html.fromstring(htmlpage.content)
     subpage_hrefs = list(set(tree.xpath(scraper.main_page_find_subpages_xpath)))
+
     found_streams = OrderedDict()
 
     for subpage_href in subpage_hrefs:
@@ -57,8 +56,6 @@ def start_scraper(scraper):
         subpage_htmlpage = requests.get(subpage_url)
         subpage_tree = html.fromstring(subpage_htmlpage.content)
         subpage_streams = subpage_tree.xpath(scraper.subpage_find_stream_xpath)
-        subpage_icon = "http://www.zdf.de/ZDFmediathek/contentblob/2686324/timg485x273blob/13882596"
-
         title_xpaths = scraper.title_xpaths.split(',') if ',' in scraper.title_xpaths else [scraper.title_xpaths]
         title = u''
         titles_tuple = []
@@ -71,10 +68,19 @@ def start_scraper(scraper):
         titles_tuple = tuple(titles_tuple)
 
         if scraper.filter_title_contains and len(scraper.filter_title_contains) > 1 and scraper.filter_title_contains not in title:
-            print "--- skipping title ---", title, titles, titles_tuple
+            print "--- skipping title ---", title, titles_tuple
             continue
 
         for sub_stream in subpage_streams:
+            if 'zdf.de' in scraper.main_page_url:
+                stream_icon = subpage_href.getparent().getparent().getparent().getparent().xpath('div[@class="image"]/a/img/@src')[0]
+                stream_icon = stream_icon.replace('timg94x65blob', 'timg485x273blob')
+                stream_icon_url = make_absolute(
+                    base_url=base_url,
+                    path=stream_icon
+                )
+                titles_tuple += (stream_icon_url, )
+
             if sub_stream in found_streams:
                 found_streams[sub_stream].append(titles_tuple)
             else:
@@ -118,9 +124,14 @@ def process_scraper(scraper, livechannel_title_index=None, delete_obsolete_strea
 
     for stream_url, titles_tuples in found_streams.items():
         for titles_tuple in titles_tuples:
-            full_title = u' '.join(titles_tuple)
+            titles_tuple = list(titles_tuple)
+            stream_logo_url = ''
             if scraper.scraper_type == u'ZDFScraperPage':
                 start_end_text = titles_tuple[0].replace("Olympia 2016, ", "").split(" - ")
+                if titles_tuple[-1].startswith('http'):
+                    stream_logo_url = titles_tuple[-1]
+                    titles_tuple = titles_tuple[0:-1]
+
                 stream_start_dt = None
                 stream_end_time = None
                 stream_end_dt = None
@@ -159,6 +170,7 @@ def process_scraper(scraper, livechannel_title_index=None, delete_obsolete_strea
                 stream_url=stream_url,
                 start_dt=stream_start_dt,
                 end_dt=stream_end_dt,
+                stream_logo_url=stream_logo_url,
                 defaults={
                     'wrapper': scraper.default_wrapper,
                     'name': full_title,

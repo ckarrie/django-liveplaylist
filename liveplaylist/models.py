@@ -4,6 +4,7 @@ import utils
 import validators
 from django.db import models
 from django.utils import timezone
+import datetime
 
 
 class Playlist(models.Model):
@@ -105,9 +106,14 @@ class LiveSource(models.Model):
     start_dt = models.DateTimeField(null=True, blank=True)
     end_dt = models.DateTimeField(null=True, blank=True)
 
-    def currently_live(self):
+    def currently_live(self, tolerance=datetime.timedelta(minutes=10)):
         if self.start_dt and self.end_dt:
-            return self.start_dt <= timezone.now() <= self.end_dt
+            start = self.start_dt
+            end = self.end_dt
+            if tolerance:
+                start -= tolerance
+                end += tolerance
+            return start <= timezone.now() <= end
 
     def get_wrapper_string(self, wrapper=None):
         if wrapper:
